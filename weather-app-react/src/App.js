@@ -14,11 +14,32 @@ function App() {
     return date;
   };
 
+  const [query, setQuery] = useState("");
+  const [weather, setWether] = useState({});
+  const search = (e) => {
+    if (e.key === "Enter"){
+      fetch(`${api.base}weather?q=${query}&units=metric&appid=${api.key}`)
+        .then((res) => res.json())
+        .then((results) => {
+          setQuery("");
+          setWether(results);
+          console.log(results);
+        })
+    }
+  }
+
   return (
     <div className="App">
       <main>
         <div className="search-container">
-          <input type="text" placeholder="Search..." className="search-bar" />
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            className="search-bar" 
+            onChange={(e) => setQuery(e.target.value)} 
+            value={query} 
+            onKeyPress={search} 
+          />
         </div>
         <div>
           <div className="location-container">
